@@ -3,6 +3,8 @@
 --     mybox, exbox, albox
 -- Providing same environments probably is doable using latex alone, but this is easier to see.
 
+common = require("common")
+
 local paperbox = {}
 
 local function generatemacro(name, colback, colframe, coltitle)
@@ -28,18 +30,9 @@ local function generatemacro(name, colback, colframe, coltitle)
     ]], name, colback, colframe, coltitle)
 end
 
---- Print multiple lines string to tex.
--- Tricks need to be used since usual new lines in Lua do not translate to new lines in TeX
--- @param lines multiple lines string
-local function printlines2tex(lines)
-    for line in  string.gmatch(lines, "[^\r\n]+") do
-        tex.print(line)
-    end
-end
-
 --- Set up before paperbox.new
 function paperbox.setup()
-    printlines2tex([[
+    common.printlines2tex([[
         \usepackage{tcolorbox}
         \tcbuselibrary{skins}
     ]])
@@ -47,13 +40,13 @@ end
 
 --- Create a custom paper box
 function paperbox.new(name, colback, colframe, coltitle)
-    printlines2tex(generatemacro(name, colback, colframe, coltitle))
+    common.printlines2tex(generatemacro(name, colback, colframe, coltitle))
 end
 
 --- Set up default paper boxes.
 function paperbox.preset()
     paperbox.setup()
-    printlines2tex([[
+    common.printlines2tex([[
     \definecolor{mLightGreen}{HTML}{14B03D}
     \definecolor{mDarkTeal}{HTML}{23373b}
     \definecolor{mLightBrown}{HTML}{EB811B}
